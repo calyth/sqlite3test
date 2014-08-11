@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Sqlite3test</string>
+    <string name="individual_insert">Individual Insert test</string>
+    <string name="batch_insert">Batch insert test</string>
+    <string name="action_settings">Settings</string>
+    <string name="test_results">Test Results</string>
+
+</resources>
