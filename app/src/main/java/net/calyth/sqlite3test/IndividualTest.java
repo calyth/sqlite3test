@@ -2,6 +2,7 @@ package net.calyth.sqlite3test;
 
 import android.app.Activity;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.view.View;
 import android.widget.EditText;
@@ -34,14 +35,22 @@ public class IndividualTest implements View.OnClickListener{
             CustomerSQLiteHelper db_helper = new CustomerSQLiteHelper(mContext);
             db_helper.initialize();
             long startTime = System.currentTimeMillis();
+            SQLiteDatabase db = db_helper.getWritableDatabase();
+            db.beginTransaction();
             for (int i = 0; i < mRows; i++)
             {
-                db_helper.addCustomer("customer " + i);
-                if(i % 10 == 0)
+                CustomerSQLiteHelper.addCustomer(db, "customer " + i);
+                if(i % 25 == 0)
                 {
                     publishProgress((long) i);
+                    db.setTransactionSuccessful();
+                    db.endTransaction();
+                    db.beginTransaction();
                 }
             }
+            db.setTransactionSuccessful();
+            db.endTransaction();
+            db.close();
             long diff = System.currentTimeMillis() - startTime;
             return Double.toString((double) mRows * 1000 / diff);
         }

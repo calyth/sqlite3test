@@ -2,8 +2,8 @@
 <resources>
 
     <string name="app_name">Sqlite3test</string>
-    <string name="individual_insert">Individual Insert test</string>
-    <string name="batch_insert">Batch insert test</string>
+    <string name="individual_insert">Insert batch of 25 test</string>
+    <string name="batch_insert">Prepared statement</string>
     <string name="action_settings">Settings</string>
     <string name="test_results">Test Results</string>
 

@@ -46,13 +46,17 @@ public class BatchTest implements View.OnClickListener{
                 stmt.clearBindings();
                 stmt.bindString(1, String.format("Customer %d", i));
                 stmt.execute();
-                if (i % 10 == 0)
+                if (i % 25 == 0)
                 {
                     publishProgress((long) i);
+                    db.setTransactionSuccessful();
+                    db.endTransaction();
+                    db.beginTransaction();
                 }
             }
             db.setTransactionSuccessful();
             db.endTransaction();
+            db.close();
             long diff = System.currentTimeMillis() - startTime;
             return Double.toString((double) mRows * 1000 / diff);
         }
