@@ -49,11 +49,15 @@ public class CustomerSQLiteHelper extends SQLiteOpenHelper {
     {
         SQLiteDatabase db = this.getWritableDatabase();
         db.beginTransaction();
-        ContentValues values = new ContentValues();
-        values.put(KEY_CUSTOMER, customer);
-        db.insert(TABLE_CUSTOMERS, null, values);
+        CustomerSQLiteHelper.addCustomer(db, customer);
         db.setTransactionSuccessful();
         db.endTransaction();
         db.close();
+    }
+    static public void addCustomer(SQLiteDatabase db, String customer)
+    {
+        ContentValues values = new ContentValues();
+        values.put(KEY_CUSTOMER, customer);
+        db.insert(TABLE_CUSTOMERS, null, values);
     }
 }
