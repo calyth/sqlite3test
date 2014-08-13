@@ -36,22 +36,31 @@ public class BatchTest implements View.OnClickListener{
             CustomerSQLiteHelper db_helper = new CustomerSQLiteHelper(mContext);
             db_helper.initialize();
             long startTime = System.currentTimeMillis();
-            String sql = "INSERT INTO " + CustomerSQLiteHelper.TABLE_CUSTOMERS +
-                    " VALUES (NULL,?);";
+            StringBuilder sql_builder = new StringBuilder("INSERT INTO " + CustomerSQLiteHelper.TABLE_CUSTOMERS +
+                    " (id, customer) VALUES ");
+            for (int i = 0; i < 24; i++)
+            {
+                sql_builder.append("(NULL, ?), ");
+            }
+            sql_builder.append("(NULL, ?)");
+            String sql = sql_builder.toString();
             SQLiteDatabase db = db_helper.getWritableDatabase();
             SQLiteStatement stmt = db.compileStatement(sql);
+            stmt.clearBindings();
             db.beginTransaction();
             for (int i = 0; i < mRows; i++)
             {
-                stmt.clearBindings();
-                stmt.bindString(1, String.format("Customer %d", i));
-                stmt.execute();
+
+                stmt.bindString((i % 25) + 1, String.format("Customer %d", i));
+//                stmt.execute();
                 if (i % 25 == 0)
                 {
+                    stmt.execute();
                     publishProgress((long) i);
                     db.setTransactionSuccessful();
                     db.endTransaction();
                     db.beginTransaction();
+                    stmt.clearBindings();
                 }
             }
             db.setTransactionSuccessful();
